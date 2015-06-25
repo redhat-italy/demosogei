@@ -1,3 +1,4 @@
+<%@ page import="java.security.Principal" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,6 +29,11 @@
     <!-- main content -->
     <div id="content">
 
+        <% Principal principal = request.getUserPrincipal(); %>
+        <%  if (principal != null){ %>
+        <p style="margin-right: 200px;;text-align:right">User: <strong><%= principal.getName() %></strong> | <a href="logout">logout</a></p>
+        <%  } %>
+
         <div class="section">
 
             <h1>Request new hardware</h1>
@@ -37,20 +43,20 @@
             </div>
 
             <div id="frmNewHWR">
-            <form method="POST" action="/business-central/rest/runtime/it.sogei.bpm:provisioning:1.0-SNAPSHOT/process/provisioning.richiesta_hw/start">
+            <form action="#">
                 <fieldset>
                     <legend>HWR</legend>
-                    <label for="days">Days: </label><input name="map_days" id="days" type=”text”><br/>
-                    <label for="numberOfHost">Number of hosts: </label><input name="map_number" id="numberOfHost" type=”text”><br/>
-                    <label for="hostSize">Host size: </label><select name="map_size" id="hostSize">
-                        <option value="1">Small</option>
-                        <option value="2">Medium</option>
-                        <option value="3">Large</option>
-                        <option value="4">Extra Large</option>
-                    </select><br/>
-                    <input type="hidden" name="map_user" id="map_user" value="<%=request.getUserPrincipal().getName()%>">
-                    <input type="reset" value="Reset">
-                    <input type="button" value="Send" id="btnSubmit">
+                    <table>
+                        <tr><td width="170"><label for="days">Days: </label></td><td><input name="map_days" id="days" type=”text”></td></tr>
+                        <tr><td width="170"><label for="numberOfHost">Number of hosts: </label></td><td><input name="map_number" id="numberOfHost" type=”text”></td></tr>
+                        <tr><td width="170"><label for="hostSize">Host size: </label></td><td><select name="map_size" id="hostSize">
+                            <option value="1">Small</option>
+                            <option value="2">Medium</option>
+                            <option value="3">Large</option>
+                            <option value="4">Extra Large</option>
+                        </select></td></tr>
+                        <tr><td width="170" align="right"><input type="reset" value="Reset"></td><td><input type="button" value="Send" id="btnSubmit"></td></tr>
+                    </table>
                 </fieldset>
             </form>
             </div>
@@ -67,19 +73,27 @@
 
 <script type="application/javascript">
 
-    $("#btnSubmit").click(function() {
-        $.post( "/business-central/rest/runtime/it.sogei.bpm:provisioning:1.0-SNAPSHOT/process/provisioning.richiesta_hw/start",
-        {map_days: "s"+$("#days").value(),
-            map_number: "s"+$("#numberOfHost").value(),
-            map_size: "s"+$("#hostSize").value(),
-            map_user: $("#map_user").value()
+    $(document).ready(function(){
+        $("#btnSubmit").click(function() {
+            var theUrl = '/business-central/rest/runtime/it.sogei.bpm:provisioning:1.0-SNAPSHOT/process/provisioning.richiesta_hw/start?';
+            theUrl = theUrl + 'map_days=s' + $("#days").val();
+            theUrl = theUrl + '&map_number=s' + $("#numberOfHost").val();
+            theUrl = theUrl + '&map_size=s' + 3;
+            theUrl = theUrl + '&map_user=' + '<%= principal.getName() %>';
+
+            $.ajax({
+                url: theUrl,
+                type: 'POST',
+                data: {},
+                dataType: 'json',
+                complete: function(response, status, xhr){
+                    var data = jQuery.parseJSON(response.responseText);
+                    alert('Request id: '+data.id);
+                    }
+            })
+
         })
-        .done(function( data ) {
-            $("#responseMessage").innerText("Task submitted");
-            $("#frmNewHWR").hide();
-            $("#responseMessage").show();
-        });
-    })
+    });
 
 </script>
 

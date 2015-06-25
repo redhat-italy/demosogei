@@ -31,7 +31,7 @@
 
         <% Principal principal = request.getUserPrincipal(); %>
         <%  if (principal != null){ %>
-        <p style="margin-right: 200px;;text-align:right">User: <strong><%= principal.getName() %></strong> | <a href="logout">logout</a></p>
+        <p style="margin-right: 200px;;text-align:right">User: <strong><%= principal.getName() %></strong> | <a href="index.html">home</a> | <a href="logout">logout</a></p>
         <%  } %>
 
         <div class="section">

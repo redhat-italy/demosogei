@@ -30,11 +30,29 @@
 
         <div class="section">
 
-            <h1>Request new hardware</h1>
+            <h1>Task list</h1>
 
             <p>
 
-            <form method="POST" action="/business-central/rest/runtime/it.sogei.bpm:provisioning:1.0-SNAPSHOT/process/provisioning.richiesta_hw/start">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#ID</th><th>Task</th><th>Description</th>
+                    </tr>
+                </thead>
+                <tbody id="taskList">
+                    <tr>
+                        <td></td><td></td><td></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3">&nbsp;</th>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <form method="POST" action="curl -X GET -H 'Accept: application/json' -uandrea 'http://bpm.local:8080/business-central/rest/task/query?potentialOwner=andrea">
                 <fieldset>
                     <legend>HWR</legend>
                     <label for="days">Days: </label><input name="map_days" id="days" type=”text”><br/>
@@ -45,7 +63,7 @@
                         <option value="3">Large</option>
                         <option value="4">Extra Large</option>
                     </select><br/>
-                    <input type="hidden" name="map_user" value="<%=request.getUserPrincipal().getName()%>">
+                    <input type="hidden" name="potentialOwner" value="<%=request.getUserPrincipal().getName()%>">
                     <input type="reset" value="Reset">
                     <input type="submit" value="Send">
                 </fieldset>
@@ -61,5 +79,45 @@
 
 </div>
 
+<script type="application/javascript">
+
+    /*
+     $.get( "/business-central/rest/task/query?potentialOwner=<%=request.getUserPrincipal().getName()%>", function( data ) {
+         alert(data);
+         populateTaskList(data);
+     }, "json" );
+     */
+
+    data = {"status":null,"url":null,"index":null,"commandName":null,"taskSummaryList":[{"@class":"org.kie.services.client.serialization.jaxb.impl.task.JaxbTaskSummary","id":1,"name":"Revision","subject":"","description":"","status":"Ready","priority":0,"skipable":false,"actualOwnerId":null,"createdById":null,"createdOn":1435225345890,"activationTime":1435225345890,"expirationTime":null,"processInstanceId":3,"processId":"provisioning.richiesta_hw","processSessionId":0,"deploymentId":"it.sogei.bpm:provisioning:1.0-SNAPSHOT","quickTaskSummary":false,"parentId":-1,"potentialOwners":null},{"@class":"org.kie.services.client.serialization.jaxb.impl.task.JaxbTaskSummary","id":2,"name":"Revision","subject":"","description":"","status":"Ready","priority":0,"skipable":false,"actualOwnerId":null,"createdById":null,"createdOn":1435225355804,"activationTime":1435225355804,"expirationTime":null,"processInstanceId":4,"processId":"provisioning.richiesta_hw","processSessionId":0,"deploymentId":"it.sogei.bpm:provisioning:1.0-SNAPSHOT","quickTaskSummary":false,"parentId":-1,"potentialOwners":null},{"@class":"org.kie.services.client.serialization.jaxb.impl.task.JaxbTaskSummary","id":3,"name":"Revision","subject":"","description":"","status":"Ready","priority":0,"skipable":false,"actualOwnerId":null,"createdById":null,"createdOn":1435225366845,"activationTime":1435225366845,"expirationTime":null,"processInstanceId":5,"processId":"provisioning.richiesta_hw","processSessionId":0,"deploymentId":"it.sogei.bpm:provisioning:1.0-SNAPSHOT","quickTaskSummary":false,"parentId":-1,"potentialOwners":null}],"pageNumber":null,"pageSize":null}
+    populateTaskList(data);
+
+
+    function populateTaskList(data) {
+        $.each(data.taskSummaryList, function (index, task) {
+            $('#taskList').append('<tr onclick="claim('+task.id+');"><td>'+task.id+'</td><td>'+task.name+'</td><td>'+task.description+'</td></tr>');
+        });
+    }
+
+    function claim(taskId) {
+        $.post( "/business-central/rest/task/" + taskId + "/claim", function() {
+            alert( "success" );
+            edit(taskId);
+        })
+        .done(function() {
+//            alert( "second success" );
+        })
+        .fail(function() {
+//            alert( "error" );
+        })
+        .always(function() {
+//            alert( "finished" );
+        });
+    }
+
+    function edit(taskId) {
+
+    }
+
+</script>
 </body>
 </html>

@@ -33,17 +33,18 @@
 
             <p>
 
-            <form method="POST" action="/business-central/rest/runtime/it.sogei.bpm:provisioning:1.0-SNAPSHOT/process/provisioning.richiesta_hw/start?map_days=s4&map_number=s2&map_size=s3&map_user=andrea">
+            <form method="POST" action="/business-central/rest/runtime/it.sogei.bpm:provisioning:1.0-SNAPSHOT/process/provisioning.richiesta_hw/start">
                 <fieldset>
                     <legend>HWR</legend>
-                    <label for="days">Days: </label><input id="days" type=”text”><br/>
-                    <label for="numberOfHost">Number of hosts: </label><input id="numberOfHost" type=”text”><br/>
-                    <label for="hostSize">Host size: </label><select id="hostSize">
-                        <option value="S">Small</option>
-                        <option value="M">Medium</option>
-                        <option value="L">Large</option>
-                        <option value="XL">Extra Large</option>
+                    <label for="days">Days: </label><input name="map_days" id="days" type=”text”><br/>
+                    <label for="numberOfHost">Number of hosts: </label><input name="map_number" id="numberOfHost" type=”text”><br/>
+                    <label for="hostSize">Host size: </label><select name="map_size" id="hostSize">
+                        <option value="1">Small</option>
+                        <option value="2">Medium</option>
+                        <option value="3">Large</option>
+                        <option value="4">Extra Large</option>
                     </select><br/>
+                    <input type="hidden" name="map_user" value="<%=request.getUserPrincipal().getName()%>">
                     <input type="reset" value="Reset">
                     <input type="submit" value="Send">
                 </fieldset>

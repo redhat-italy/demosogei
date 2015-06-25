@@ -33,10 +33,7 @@
             <h1>Request new hardware</h1>
 
             <p>
-            <div id="responseMessage">
-            </div>
 
-            <div id="frmNewHWR">
             <form method="POST" action="/business-central/rest/runtime/it.sogei.bpm:provisioning:1.0-SNAPSHOT/process/provisioning.richiesta_hw/start">
                 <fieldset>
                     <legend>HWR</legend>
@@ -48,12 +45,11 @@
                         <option value="3">Large</option>
                         <option value="4">Extra Large</option>
                     </select><br/>
-                    <input type="hidden" name="map_user" id="map_user" value="<%=request.getUserPrincipal().getName()%>">
+                    <input type="hidden" name="map_user" value="<%=request.getUserPrincipal().getName()%>">
                     <input type="reset" value="Reset">
-                    <input type="button" value="Send" id="btnSubmit">
+                    <input type="submit" value="Send">
                 </fieldset>
             </form>
-            </div>
             </p>
 
         </div>
@@ -64,24 +60,6 @@
     <div id="footer">&nbsp;</div>
 
 </div>
-
-<script type="application/javascript">
-
-    $("#btnSubmit").click(function() {
-        $.post( "/business-central/rest/runtime/it.sogei.bpm:provisioning:1.0-SNAPSHOT/process/provisioning.richiesta_hw/start",
-        {map_days: "s"+$("#days").value(),
-            map_number: "s"+$("#numberOfHost").value(),
-            map_size: "s"+$("#hostSize").value(),
-            map_user: $("#map_user").value()
-        })
-        .done(function( data ) {
-            $("#responseMessage").innerText("Task submitted");
-            $("#frmNewHWR").hide();
-            $("#responseMessage").show();
-        });
-    })
-
-</script>
 
 </body>
 </html>

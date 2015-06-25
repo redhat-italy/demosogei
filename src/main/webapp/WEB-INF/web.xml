@@ -10,4 +10,60 @@
         <param-value>true</param-value>
     </context-param>
 
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Define a Security Constraint on this Application -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>UnProtected Resources</web-resource-name>
+            <url-pattern>/css/*</url-pattern>
+            <url-pattern>/js/*</url-pattern>
+            <url-pattern>/rs/*</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+
+    <!-- Define a Security Constraint on this Application -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected Resources</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+            <role-name>user</role-name>
+            <role-name>broker</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- Define the Login Configuration for this Application -->
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>JBoss IDentity Provider</realm-name>
+    </login-config>
+
+    <!-- Security roles referenced by this web application -->
+    <security-role>
+        <role-name>admin</role-name>
+    </security-role>
+    <security-role>
+        <role-name>user</role-name>
+    </security-role>
+    <security-role>
+        <role-name>developer</role-name>
+    </security-role>
+    <security-role>
+        <role-name>broker</role-name>
+    </security-role>
+    <security-role>
+        <role-name>manager</role-name>
+    </security-role>
+    <security-role>
+        <role-name>appraiser</role-name>
+    </security-role>
+    <security-role>
+        <role-name>analyst</role-name>
+    </security-role>
 </web-app>

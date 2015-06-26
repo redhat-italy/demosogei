@@ -58,21 +58,8 @@
                 </tfoot>
             </table>
 
-            <form method="POST" action="curl -X GET -H 'Accept: application/json' -uandrea 'http://bpm.local:8080/business-central/rest/task/query?potentialOwner=andrea">
-                <fieldset>
-                    <legend>HWR</legend>
-                    <label for="days">Days: </label><input name="map_days" id="days" type=”text”><br/>
-                    <label for="numberOfHost">Number of hosts: </label><input name="map_number" id="numberOfHost" type=”text”><br/>
-                    <label for="hostSize">Host size: </label><select name="map_size" id="hostSize">
-                        <option value="1">Small</option>
-                        <option value="2">Medium</option>
-                        <option value="3">Large</option>
-                        <option value="4">Extra Large</option>
-                    </select><br/>
-                    <input type="hidden" name="potentialOwner" value="<%=request.getUserPrincipal().getName()%>">
-                    <input type="reset" value="Reset">
-                    <input type="submit" value="Send">
-                </fieldset>
+            <form id="frmConfirm" style="display:none" method="POST" action="confirm.jsp">
+                    <input type="hidden" name="taskId" id="taskId">
             </form>
             </p>
 
@@ -100,14 +87,19 @@
 
     function populateTaskList(data) {
         $.each(data.taskSummaryList, function (index, task) {
-            $('#taskList').append('<tr onclick="claim('+task.id+');"><td>'+task.id+'</td><td>'+task.name+'</td><td>'+task.description+'</td></tr>');
+            var rowColor = "#ffffff"
+            if (index % 2 == 0) {
+                rowColor = "#999999"
+            }
+            $('#taskList').append('<tr style="background-color: ' + rowColor +';" onclick="claim('+task.id+');"><td>'+task.id+'</td><td>'+task.name+'</td><td>'+task.description+'</td></tr>');
         });
     }
 
     function claim(taskId) {
         $.post( "/business-central/rest/task/" + taskId + "/claim", function() {
             alert( "success" );
-            edit(taskId);
+            $("#taskId").val(taskId);
+            $("#frmConfirm").submit();
         })
         .done(function() {
 //            alert( "second success" );
@@ -118,10 +110,6 @@
         .always(function() {
 //            alert( "finished" );
         });
-    }
-
-    function edit(taskId) {
-
     }
 
 </script>

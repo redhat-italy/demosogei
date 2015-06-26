@@ -78,7 +78,7 @@
             var theUrl = '/business-central/rest/runtime/it.sogei.bpm:provisioning:1.0-SNAPSHOT/process/provisioning.richiesta_hw/start?';
             theUrl = theUrl + 'map_days=s' + $("#days").val();
             theUrl = theUrl + '&map_number=s' + $("#numberOfHost").val();
-            theUrl = theUrl + '&map_size=s' + 3;
+            theUrl = theUrl + '&map_size=s' + $("#hostSize").val();
             theUrl = theUrl + '&map_user=' + '<%= principal.getName() %>';
 
             $.ajax({
@@ -88,8 +88,11 @@
                 dataType: 'json',
                 complete: function(response, status, xhr){
                     var data = jQuery.parseJSON(response.responseText);
-                    alert('Request id: '+data.id);
-                    }
+                    //alert('Request id: '+data.id);
+                    $("#responseMessage").html("<span style=\"color: #33aa33; font-size:14pt;\">New hardware request submitted successfully.<br/>Transaction ID #" + data.id + "</span>");
+                    $("#frmNewHWR").hide();
+
+                }
             })
 
         })

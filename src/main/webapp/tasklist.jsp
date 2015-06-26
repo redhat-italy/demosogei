@@ -87,16 +87,22 @@
 
 <script type="application/javascript">
 
-    /*
-     $.get( "/business-central/rest/task/query?potentialOwner=<%=request.getUserPrincipal().getName()%>", function( data ) {
-         alert(data);
-         populateTaskList(data);
-     }, "json" );
-     */
+    $(document).ready(function(){
+        var theUrl = '/business-central/rest/task/query?potentialOwner=<%= principal.getName() %>';
 
-    data = {"status":null,"url":null,"index":null,"commandName":null,"taskSummaryList":[{"@class":"org.kie.services.client.serialization.jaxb.impl.task.JaxbTaskSummary","id":1,"name":"Revision","subject":"","description":"","status":"Ready","priority":0,"skipable":false,"actualOwnerId":null,"createdById":null,"createdOn":1435225345890,"activationTime":1435225345890,"expirationTime":null,"processInstanceId":3,"processId":"provisioning.richiesta_hw","processSessionId":0,"deploymentId":"it.sogei.bpm:provisioning:1.0-SNAPSHOT","quickTaskSummary":false,"parentId":-1,"potentialOwners":null},{"@class":"org.kie.services.client.serialization.jaxb.impl.task.JaxbTaskSummary","id":2,"name":"Revision","subject":"","description":"","status":"Ready","priority":0,"skipable":false,"actualOwnerId":null,"createdById":null,"createdOn":1435225355804,"activationTime":1435225355804,"expirationTime":null,"processInstanceId":4,"processId":"provisioning.richiesta_hw","processSessionId":0,"deploymentId":"it.sogei.bpm:provisioning:1.0-SNAPSHOT","quickTaskSummary":false,"parentId":-1,"potentialOwners":null},{"@class":"org.kie.services.client.serialization.jaxb.impl.task.JaxbTaskSummary","id":3,"name":"Revision","subject":"","description":"","status":"Ready","priority":0,"skipable":false,"actualOwnerId":null,"createdById":null,"createdOn":1435225366845,"activationTime":1435225366845,"expirationTime":null,"processInstanceId":5,"processId":"provisioning.richiesta_hw","processSessionId":0,"deploymentId":"it.sogei.bpm:provisioning:1.0-SNAPSHOT","quickTaskSummary":false,"parentId":-1,"potentialOwners":null}],"pageNumber":null,"pageSize":null}
-    populateTaskList(data);
+        $.ajax({
+            url: theUrl,
+            type: 'GET',
+            data: {},
+            dataType: 'json',
+            complete: function(response, status, xhr){
+                var data = jQuery.parseJSON(response.responseText);
+                alert(data);
+                populateTaskList(data);
+            }
+        })
 
+    });
 
     function populateTaskList(data) {
         $.each(data.taskSummaryList, function (index, task) {

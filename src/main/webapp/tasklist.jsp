@@ -43,17 +43,14 @@
             <table>
                 <thead>
                     <tr>
-                        <th>#ID</th><th>Task</th><th>Description</th>
+                        <th>#ID</th><th>Task</th><th>Description</th><th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody id="taskList">
-                    <tr>
-                        <td></td><td></td><td></td>
-                    </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="3">&nbsp;</th>
+                        <th colspan="4">&nbsp;</th>
                     </tr>
                 </tfoot>
             </table>
@@ -97,7 +94,7 @@
             if (index % 2 == 0) {
                 rowColor = "#999999"
             }
-            $('#taskList').append('<tr style="background-color: ' + rowColor +';" onclick="claim('+task.id+');"><td>'+task.id+'</td><td>'+task.name+'</td><td>'+task.description+'</td></tr>');
+            $('#taskList').append('<tr style="background-color: ' + rowColor +';"><td>'+task.id+'</td><td>'+task.name+'</td><td>'+task.description+'</td><input type="button" value="Claim" onclick="claim('+task.id+');"></tr>');
         });
     }
 

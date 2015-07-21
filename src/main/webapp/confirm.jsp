@@ -29,6 +29,7 @@
     <!-- main content -->
     <div id="content">
 
+        <% String taskId = request.getParameter("taskId"); %>
         <% Principal principal = request.getUserPrincipal(); %>
         <%  if (principal != null){ %>
         <p style="margin-right: 200px;;text-align:right">User: <strong><%= principal.getName() %></strong> | <a href="index.html">home</a> | <a href="logout">logout</a></p>
@@ -47,8 +48,8 @@
                 <fieldset>
                     <legend>Confirm</legend>
                     <table>
-                        <tr><td width="170"><label for="taskId">Task Id: </label></td><td><input name="taskId" id="taskId" type=”text”></td></tr>
-                        <tr><td width="170"><label for="note">Add a note: </label></td><td><input name="note" id="note" type=”text”></td></tr>
+                        <tr><td width="170"><p>Task Id: </p></td><td><p><b><%= taskId %></b></p></td></tr>
+                        <tr><td width="170"><label for="note">Add a note: </label></td><td><textarea rows="4" cols="50"  name="note" id="note" type=”text”></textarea></td></tr>
                         <tr><td width="170" align="right"><input type="reset" value="Reset"></td><td><input type="button" value="Send" id="btnSubmit"></td></tr>
                     </table>
                 </fieldset>
@@ -69,7 +70,32 @@
 
     $(document).ready(function(){
         $("#btnSubmit").click(function() {
-            alert('Dove???');
+            var baseUrl = '/business-central/rest/task/<%= taskId %>/';
+            var cmplUrl = baseUrl + 'complete?map_note_by_revisor=' + $("#note").val();
+            var strtUrl = baseUrl + 'start';
+
+            $.ajax({
+                url: strtUrl,
+                type: 'POST',
+                data: {},
+                dataType: 'json',
+                complete: function(response, status, xhr){
+                }
+            });
+
+            $.ajax({
+                url: cmplUrl,
+                type: 'POST',
+                data: {},
+                dataType: 'json',
+                complete: function(response, status, xhr){
+                    var data = jQuery.parseJSON(response.responseText);
+                    //alert('Request id: '+data.id);
+                    $("#frmConfirm").hide();
+                    $("#responseMessage").html('<span style="color: #33aa33; font-size:14pt;">Task successfully completed.<br/>Transaction ID #' + <%= taskId %> + ' is now running over.</span><br><a href="tasklist.jsp">go back to task list</a>');
+                }
+            });
+
         })
     });
 

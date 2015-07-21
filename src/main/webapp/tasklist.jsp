@@ -43,14 +43,14 @@
             <table>
                 <thead>
                     <tr>
-                        <th>#ID</th><th>Task</th><th>Description</th><th>&nbsp;</th>
+                        <th>#ID</th><th>date of issue</th><th>time</th><th>Task</th><th>Description</th><th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody id="taskList">
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="4">&nbsp;</th>
+                        <th colspan="6">&nbsp;</th>
                     </tr>
                 </tfoot>
             </table>
@@ -81,7 +81,7 @@
             dataType: 'json',
             complete: function(response, status, xhr){
                 var data = jQuery.parseJSON(response.responseText);
-                alert(data);
+                //alert(data);
                 populateTaskList(data);
             }
         })
@@ -89,12 +89,28 @@
     });
 
     function populateTaskList(data) {
+        var ndx = 0;
         $.each(data.taskSummaryList, function (index, task) {
-            var rowColor = "#ffffff"
-            if (index % 2 == 0) {
-                rowColor = "#999999"
+            if (task.status == "Ready") {
+                var rowColor = "#ffffff"
+                if (ndx % 2 == 0) {
+                    rowColor = "#cccccc"
+                }
+                var d = new Date(task.createdOn);
+                var content = '<tr style="background-color: ' + rowColor + ';">';
+                var content = content + '<td width="30">'+ task.id + '</td>';
+                var content = content + '<td width="110">' + d.toLocaleDateString() + '</td>';
+                var content = content + '<td width="100">'+ d.toLocaleTimeString() + '</td>';
+                var content = content + '<td width="90">'+ task.name + '</td>';
+                var content = content + '<td width="280">Number of days exceeds standard quota</td>';
+                if (task.status == "Reserved") {
+                    var content = content + '<td width="80">&nbsp;</td>';
+                } else {
+                    var content = content + '<td width="80"><input type="button" value="Claim" onclick="claim(' + task.id + ')";></td></tr>';
+                }
+                ndx++;
             }
-            $('#taskList').append('<tr style="background-color: ' + rowColor +';"><td>'+task.id+'</td><td>'+task.name+'</td><td>'+task.description+'</td><input type="button" value="Claim" onclick="claim('+task.id+');"></tr>');
+            $('#taskList').append(content);
         });
     }
 

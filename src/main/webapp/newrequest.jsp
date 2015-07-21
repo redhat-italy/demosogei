@@ -89,7 +89,7 @@
                 complete: function(response, status, xhr){
                     var data = jQuery.parseJSON(response.responseText);
                     //alert('Request id: '+data.id);
-                    $("#responseMessage").html("<span style=\"color: #33aa33; font-size:14pt;\">New hardware request submitted successfully.<br/>Transaction ID #" + data.id + "</span>");
+                    $("#responseMessage").html('<span style="color: #33aa33; font-size:14pt;">New hardware request submitted successfully.<br/>Transaction ID #' + data.id + '</span><br><input type="button" value="Another request" onclick="anotherRequest();">');
                     $("#frmNewHWR").hide();
 
                 }
@@ -97,6 +97,11 @@
 
         })
     });
+
+    function anotherRequest() {
+        $("#responseMessage").html('');
+        $("#frmNewHWR").show();
+    }
 
 </script>
 

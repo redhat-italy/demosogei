@@ -44,6 +44,8 @@
             <role-name>admin</role-name>
             <role-name>user</role-name>
             <role-name>broker</role-name>
+            <role-name>analyst</role-name>
+            <role-name>developer</role-name>
         </auth-constraint>
     </security-constraint>
 
